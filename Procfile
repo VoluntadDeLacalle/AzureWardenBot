@@ -1,1 +1,1 @@
-worker (Free): npm start (1)
+worker: npm start
