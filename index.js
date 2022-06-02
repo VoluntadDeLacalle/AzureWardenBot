@@ -440,7 +440,8 @@ client.on('guildCreate', async guild => {
     guild.systemChannel.send(`Thank you for inviting me! Use \"${savedData[currentGuildID].keywordChar}help\" to display my commands!`);
   }
   else {
-    guild.channels.cache.first().send(`Thank you for inviting me! Use \"${savedData[currentGuildID].keywordChar}help\" to display my commands!`);
+    const firstTextChannel = guild.channels.cache.filter(chx => chx.type === "text").find(x => x.position === 0);
+    firstTextChannel.send(`Thank you for inviting me! Use \"${savedData[currentGuildID].keywordChar}help\" to display my commands!`);
   }
 });
 
