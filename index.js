@@ -729,7 +729,7 @@ async function HandleBasicCommands(savedData, command, msg, messageContentSplit)
         timeoutStorage[guildID].members[mentionedMemberID] = await GetTimeoutObj(msg.guild, mentionedMemberID, NoResponseCheck, GetMinuteInMilli(savedData[guildID].violationsTimeout));
 
         const respondTime = DateTime.now().setZone('America/Chicago').plus({ minutes: savedData[guildID].violationsTimeout }).setLocale('en-US').toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS);
-        msg.channel.send(`<@${mentionedMemberID}>, you have been charged with **\"${charge}\"**. How do you plea?\nRespond with ${savedData[guildID].keywordChar}guilty or ${savedData[guildID].keywordChar}innocent by ${respondTime} or be put to trial.`);
+        msg.channel.send(`<@${mentionedMemberID}>, you have been charged with **\"${charge}\"**. How do you plea?\nRespond with ${savedData[guildID].keywordChar}guilty or ${savedData[guildID].keywordChar}innocent by ${respondTime} US-CST or be put to trial.`);
       }
       else {
         msg.reply(`Please wait. One trial, per user, at a time.`);
