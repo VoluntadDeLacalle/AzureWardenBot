@@ -144,7 +144,7 @@ async function NoResponseCheck(guildID, mentionedMemberID) {
   client.guilds.cache.get(guildID).channels.cache.get(savedData[guildID].members[mentionedMemberID].temp_channelID).send(`<@${mentionedMemberID}> has not responded! A trial has begun!`);
   const guildMember = client.guilds.cache.get(guildID).members.cache.get(mentionedMemberID);
 
-  const respondTime = DateTime.now().plus({ minutes: savedData[guildID].violationsTimeout }).setLocale('en-US').toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS);
+  const respondTime = DateTime.now().setZone('America/Chicago').plus({ minutes: savedData[guildID].violationsTimeout }).setLocale('en-US').toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS);
   const voteMessage = await client.guilds.cache.get(guildID).channels.cache.get(savedData[guildID].members[mentionedMemberID].temp_channelID).send(`Hello everyone! ${guildMember.displayName} has been charged with: **"${savedData[guildID].members[mentionedMemberID].temp_charge}"**.\nPlease react to this message to determine if the user is either ${innocentReactEmoji} Innocent or ${guiltyReactEmoji} Guilty!\nVoting will close at ${respondTime} US-CST.`);
   await voteMessage.react(innocentReactEmoji);
   await voteMessage.react(guiltyReactEmoji);
@@ -161,7 +161,7 @@ async function NoResponseCheck(guildID, mentionedMemberID) {
     savedData[guildID].members[mentionedMemberID].temp_charge);
 
   if (!(timeoutStorage.hasOwnProperty(guildID))) {
-    timeoutStorage = GetDefaultGuildObj();
+    timeoutStorage[guildID] = GetDefaultGuildObj();
   }
   timeoutStorage[guildID].members[mentionedMemberID] = await GetTimeoutObj(client.guilds.cache.get(guildID), mentionedMemberID, EndViolationVote, GetMinuteInMilli(savedData[guildID].violationsTimeout));
 
@@ -723,12 +723,12 @@ async function HandleBasicCommands(savedData, command, msg, messageContentSplit)
           charge);
 
         if (!(timeoutStorage.hasOwnProperty(guildID))) {
-          timeoutStorage = GetDefaultGuildObj();
+          timeoutStorage[guildID] = GetDefaultGuildObj();
         }
 
         timeoutStorage[guildID].members[mentionedMemberID] = await GetTimeoutObj(msg.guild, mentionedMemberID, NoResponseCheck, GetMinuteInMilli(savedData[guildID].violationsTimeout));
 
-        const respondTime = DateTime.now().plus({ minutes: savedData[guildID].violationsTimeout }).setLocale('en-US').toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS);
+        const respondTime = DateTime.now().setZone('America/Chicago').plus({ minutes: savedData[guildID].violationsTimeout }).setLocale('en-US').toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS);
         msg.channel.send(`<@${mentionedMemberID}>, you have been charged with **\"${charge}\"**. How do you plea?\nRespond with ${savedData[guildID].keywordChar}guilty or ${savedData[guildID].keywordChar}innocent by ${respondTime} or be put to trial.`);
       }
       else {
@@ -763,7 +763,7 @@ async function HandleBasicCommands(savedData, command, msg, messageContentSplit)
         delete timeoutStorage[guildID].members[authorID];
 
         const authorGuildMember = msg.guild.members.cache.get(authorID);
-        const respondTime = DateTime.now().plus({ minutes: savedData[guildID].violationsTimeout }).setLocale('en-US').toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS);
+        const respondTime = DateTime.now().setZone('America/Chicago').plus({ minutes: savedData[guildID].violationsTimeout }).setLocale('en-US').toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS);
         const voteMessage = await msg.channel.send(`Hello everyone! ${authorGuildMember.displayName} has been charged with: **"${savedData[guildID].members[authorID].temp_charge}"**.\nPlease react to this message to determine if the user is either ${innocentReactEmoji} Innocent or ${guiltyReactEmoji} Guilty!\nVoting will close at ${respondTime} US-CST.`);
         await voteMessage.react(innocentReactEmoji);
         await voteMessage.react(guiltyReactEmoji);
@@ -777,7 +777,7 @@ async function HandleBasicCommands(savedData, command, msg, messageContentSplit)
           savedData[guildID].members[authorID].temp_charge);
 
         if (!(timeoutStorage.hasOwnProperty(guildID))) {
-          timeoutStorage = GetDefaultGuildObj();
+          timeoutStorage[guildID] = GetDefaultGuildObj();
         }
         timeoutStorage[guildID].members[authorID] = await GetTimeoutObj(msg.guild, authorID, EndViolationVote, GetMinuteInMilli(savedData[guildID].violationsTimeout));
 
