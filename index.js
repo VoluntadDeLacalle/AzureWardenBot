@@ -411,7 +411,7 @@ client.on('ready', async () => {
 });
 
 client.on('guildCreate', async guild => {
-  const savedData = await getSavedData(guildID);
+  const savedData = await getSavedData(guild.id);
   const currentGuildID = guild.id;
 
   if (!(savedData.hasOwnProperty(currentGuildID))) {
