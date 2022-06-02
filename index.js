@@ -85,7 +85,7 @@ function GetUpdatedMemberObj(nOffenses = 0, nCharges = {}, nTimeoutEnd = '', nTe
 }
 
 async function ShouldAddTimeout(guild, memberID) {
-  const savedData = await getSavedData(guild.id);
+  const savedData = await getSavedData(guild.id, memberID);
   if (savedData[guild.id].members[memberID].timeoutEnd == '') {
     return false;
   }
@@ -359,7 +359,7 @@ client.on('ready', async () => {
   currentGuilds.forEach(async fetchedGuild => {
     const currentGuild = client.guilds.cache.get(fetchedGuild.id);
     const currentMembers = await currentGuild.members.fetch();
-    const savedData = await getSavedData(fetchedGuild.id)
+    const savedData = await getSavedData(fetchedGuild.id);
     timeoutStorage[fetchedGuild.id] = GetDefaultGuildObj();
 
     currentMembers.forEach(async member => {
