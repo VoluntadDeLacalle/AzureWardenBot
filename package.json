@@ -9,9 +9,6 @@
   },
   "author": "PrisonGuard",
   "license": "ISC",
-  "engines": {
-    "node": "v16.15.0"
-  },
   "dependencies": {
     "axios": "^0.27.2",
     "discord.js": "^13.7.0",
