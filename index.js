@@ -436,7 +436,12 @@ client.on('guildCreate', async guild => {
 
   await updateSavedData(savedData);
   console.log('Guild joined.');
-  guild.systemChannel.send(`Thank you for inviting me! Use \"${savedData[currentGuildID].keywordChar}help\" to display my commands!`);
+  if(guild.systemChannel != null) {
+    guild.systemChannel.send(`Thank you for inviting me! Use \"${savedData[currentGuildID].keywordChar}help\" to display my commands!`);
+  }
+  else {
+    guild.channels.cache.first().send(`Thank you for inviting me! Use \"${savedData[currentGuildID].keywordChar}help\" to display my commands!`);
+  }
 });
 
 async function CreateHelpMessage(guildID) {
