@@ -54,7 +54,7 @@ function GetParsedString(guildID, str) {
             currentMentionedID += str[j];
           }
           if(isID) {
-            tempString += client.guilds.cache.get(guildID).members.cache(parseInt(currentMentionedID)).displayName;
+            tempString += client.guilds.cache.get(guildID).members.cache.get(parseInt(currentMentionedID)).displayName;
             i = mentionEndNumb;
             continue;
           }
