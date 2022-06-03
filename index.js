@@ -44,7 +44,7 @@ function GetParsedString(guildID, str) {
       if(i + 2 < str.length){
         if(str[i+1] == '@') {
           let currentMentionedID = '', isID = false, mentionEndNumb = i;
-          for(let j = i+2; j < str.length;) {
+          for(let j = i+2; j < str.length; j++) {
             if(str[j] == '>'){
               mentionEndNumb = j;
               isID = true;
