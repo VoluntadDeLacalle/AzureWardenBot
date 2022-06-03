@@ -36,12 +36,38 @@ function containsNumericalChars(str) {
   return specialChars.test(str);
 }
 
-function GetParsedString(str) {
-  let finalString = ``;
+function GetParsedString(guildID, str) {
+  let tempString = ''; finalString = ``;
 
-  for (let i = 0; i < str.length; i++) {
-    if (!containsSpecialDiscordChars(str[i])) {
-      finalString += str[i];
+  for(let i = 0; i < str.length; i++) {
+    if(str[i] == '<'){
+      if(i + 2 < str.length){
+        if(str[i+1] == '@') {
+          let currentMentionedID = '', isID = false, mentionEndNumb = i;
+          for(let j = i+2; j < str.length;) {
+            if(str[j] == '>'){
+              mentionEndNumb = j;
+              isID = true;
+              break;
+            }
+
+            currentMentionedID += str[j];
+          }
+          if(isID) {
+            tempString += client.guilds.cache.get(guildID).members.cache(parseInt(currentMentionedID)).displayName;
+            i = mentionEndNumb;
+            continue;
+          }
+        }
+      }
+    }
+
+    tempString += str[i];
+  }
+
+  for (let k = 0; k < tempString.length; k++) {
+    if (!containsSpecialDiscordChars(str[k])) {
+      finalString += str[k];
     }
   }
 
@@ -712,7 +738,7 @@ async function HandleBasicCommands(savedData, command, msg, messageContentSplit)
         break;
       }
 
-      let charge = GetParsedString(msg.content.substring(substringStart, substringStart + (msg.content.length - substringStart))).toUpperCase();
+      let charge = GetParsedString(guildID, msg.content.substring(substringStart, substringStart + (msg.content.length - substringStart))).toUpperCase();
       if (savedData[guildID].members[mentionedMemberID].timeoutEnd == '' && savedData[guildID].members[mentionedMemberID].temp_msgID == '') {
         savedData[guildID].members[mentionedMemberID] = GetUpdatedMemberObj(
           savedData[guildID].members[mentionedMemberID].offenses,
