@@ -46,7 +46,9 @@ function GetParsedString(guildID, str) {
           const indexOfEndMention = str.indexOf('>', i);
           if(indexOfEndMention != -1) {
             const currentMentionedID = str.substring(i+2, indexOfEndMention);
+            console.log(currentMentionedID);
             const tempMember = client.guilds.cache.get(guildID).members.cache.get(currentMentionedID);
+            console.log(tempMember);
             if(tempMember != null) {
               tempString += tempMember.displayName;
               i = indexOfEndMention;
