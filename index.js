@@ -48,8 +48,8 @@ function GetParsedString(guildID, str) {
             const currentMentionedID = str.substring(i+2, indexOfEndMention);
             console.log(currentMentionedID);
             const tempMember = client.guilds.cache.get(guildID).members.cache.get(currentMentionedID);
-            console.log(tempMember);
             if(tempMember != null) {
+              console.log(tempMember.displayName);
               tempString += tempMember.displayName;
               i = indexOfEndMention;
               continue;
@@ -63,8 +63,8 @@ function GetParsedString(guildID, str) {
   }
 
   for (let k = 0; k < tempString.length; k++) {
-    if (!containsSpecialDiscordChars(str[k])) {
-      finalString += str[k];
+    if (!containsSpecialDiscordChars(tempString[k])) {
+      finalString += tempString[k];
     }
   }
 
