@@ -43,20 +43,15 @@ function GetParsedString(guildID, str) {
     if(str[i] == '<'){
       if(i + 2 < str.length){
         if(str[i+1] == '@') {
-          let currentMentionedID = '', isID = false, mentionEndNumb = i;
-          for(let j = i+2; j < str.length; j++) {
-            if(str[j] == '>'){
-              mentionEndNumb = j;
-              isID = true;
-              break;
+          const indexOfEndMention = str.indexOf('>', i);
+          if(indexOfEndMention != -1) {
+            const currentMentionedID = str.substring(i+2, indexOfEndMention);
+            const tempMember = client.guilds.cache.get(guildID).members.cache.get(currentMentionedID);
+            if(tempMember != null) {
+              tempString += tempMember.displayName;
+              i = indexOfEndMention;
+              continue;
             }
-
-            currentMentionedID += str[j];
-          }
-          if(isID) {
-            tempString += client.guilds.cache.get(guildID).members.cache.get(currentMentionedID).displayName;
-            i = mentionEndNumb;
-            continue;
           }
         }
       }
