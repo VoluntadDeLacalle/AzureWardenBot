@@ -107,8 +107,12 @@ function GetUpdatedMemberObj(nOffenses = 0, nCharges = {}, nTimeoutEnd = '', nTe
   return memberObj;
 }
 
-async function ShouldAddTimeout(guild, memberID) {
-  const savedData = await getSavedData(guild.id, memberID);
+async function ShouldAddTimeout(guild, memberID, savedData) {
+  if (savedData == null)
+  {
+    return false;
+  }
+
   if (savedData[guild.id].members[memberID].timeoutEnd == '') {
     return false;
   }
@@ -339,6 +343,7 @@ async function getSavedData(guildID, memberID = null) {
     return responseContent;
   } catch (error) {
     console.error(error);
+    return null;
   }
 }
 
@@ -385,13 +390,13 @@ client.on('ready', async () => {
     const savedData = await getSavedData(fetchedGuild.id);
     timeoutStorage[fetchedGuild.id] = GetDefaultGuildObj();
 
-    currentMembers.forEach(async member => {
+    for(const member of currentMembers) 
+    {
       if (!(savedData[fetchedGuild.id].members.hasOwnProperty(member.id))) {
         savedData[fetchedGuild.id].members[member.id] = GetDefaultMemberObj();
-        await updateSavedData(savedData);
       }
 
-      if (await ShouldAddTimeout(currentGuild, member.id)) {
+      if (await ShouldAddTimeout(currentGuild, member.id, savedData)) {
         const endTime = DateTime.now().setZone('America/Chicago').until(DateTime.fromISO(savedData[fetchedGuild.id].members[member.id].timeoutEnd)).count('seconds');
 
         if (isNaN(endTime)) {
@@ -429,7 +434,8 @@ client.on('ready', async () => {
           timeoutStorage[fetchedGuild.id].members[member.id] = await GetTimeoutObj(currentGuild, member.id, functionToCall, (GetSecondInMilli(endTime)));
         }
       }
-    });
+    };
+    await updateSavedData(savedData);
   });
 });
 
