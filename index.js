@@ -1092,7 +1092,5 @@ client.on('messageCreate', async msg => {
   HandleBasicCommands(savedData, command, msg, messageContentSplit);
 });
 
-
-console.log(process.env.CLIENT_TOKEN);
 //make sure this line is the last line
 client.login(process.env.CLIENT_TOKEN); //login bot using token
