@@ -12,7 +12,7 @@ const gistClientInstance = axios.create({
   timeout: 10000,
   headers: {
     'Accept': 'application/vnd.github.v3+json',
-    'Authorization': 'token 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'
+    'Authorization': process.env.GIT_TOKEN
   }
 });
 
